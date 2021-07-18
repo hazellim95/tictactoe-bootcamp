@@ -1,0 +1,53 @@
+//// Archive: old code ////
+// Base - checkWin function:
+
+const checkWin = (board) => {
+  // check every position
+  // there is a conditional for all 15 win conditions
+  var row1 = (board[0][0] === board[0][1] && board[0][1] === board[0][2]) ? true : false;
+  var row2 = (board[1][0] === board[1][1] && board[1][1] === board[1][2]) ? true : false;
+  var row3 = (board[2][0] === board[2][1] && board[2][1] === board[2][2]) ? true : false;
+  var column1 = (board[0][0] === board[1][0] && board[1][0] === board[2][0]) ? true : false;
+  var column2 = (board[0][1] === board[1][1] && board[1][1] === board[2][1]) ? true : false;
+  var column3 = (board[0][2] === board[1][2] && board[1][2] === board[2][2]) ? true : false;
+  var diagonalRight = (board[0][0] === board[1][1] && board[1][1] === board[2][2]) ? true : false;
+  var diagonalLeft = (board[0][2] === board[1][1] && board[1][1] === board[2][0]) ? true : false;
+
+  // Error checking //
+  console.log(`row1: ${row1}`);
+  console.log(`row2: ${row2}`);
+  console.log(`row3: ${row3}`);
+  console.log(`col1: ${column1}`);
+  console.log(`col2: ${column2}`);
+  console.log(`col3: ${column3}`);
+  console.log(`diagonalRight: ${diagonalRight}`);
+  console.log(`diagonalLeft: ${diagonalLeft}`);
+
+  //// Winning conditions ////
+  // If any three squares in a row or column has X or O, 
+  if ((row1 && board[0][0] === currentPlayer) || (row2 && board[1][0] === currentPlayer) || (row3 && board[2][0] === currentPlayer) || (column1 && board[0][0] === currentPlayer) || (column2 && board[0][1] === currentPlayer) || (column3 && board[0][2] === currentPlayer) || (diagonalRight && board[0][0] === currentPlayer) || (diagonalLeft && board[0][2] === currentPlayer)) {
+    console.log(`game over. player ${currentPlayer} wins`);
+    return true;
+  }
+  // Otherwise, nobody won yet
+  else {
+    console.log('no win yet');
+    return false;
+  }
+  
+  
+  //else if (row1 || row2 || row3 || column1 || column2 || column3 || diagonalRight || diagonalLeft) {}
+  // if (board[0][0] === board[0][1] && board[0][1] === board[0][2]) {
+  //   console.log('coordinates of first row squares:');
+  //   console.log(`${board[0][0]}, ${board[0][1]}, ${board[0][2]}`);
+  //   return true;
+  // }
+
+  // if (board[0][0] === board[1][0] && board[1][0] === board[2][0]) {
+  //   console.log('coordinates of first column squares:');
+  //   console.log(`${board[0][0]}, ${board[1][0]}, ${board[2][0]}`);
+  //   return true;
+  //   // X
+  //   // X
+  //   // X
+};

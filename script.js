@@ -6,6 +6,8 @@ const board = [
   ['', '', ''],
 ];
 
+let boardSize;
+
 const numberOfPlayers = 2;
 
 // the element that contains the rows and squares
@@ -113,6 +115,7 @@ const squareClick = function (column, row) {
     buildBoard(board);
 
     if (checkWin(board) === true) {
+      console.log('win!');
       // variable to store winner's name
       let winnerName;
       // game over
@@ -134,62 +137,65 @@ const squareClick = function (column, row) {
       const score2 = playerInfo[1].score;
       displayScoreboard(score1, score2);
     } else {
+      console.log('no win yet');
       // switch to the next player
       togglePlayer();
     }
   }
 };
 
-// check whether the game is won
+// check whether the game is won - returns true if won, and false if otherwise
 const checkWin = (board) => {
-  // check every position
-  // there is a conditional for all 15 win conditions
-  var row1 = (board[0][0] === board[0][1] && board[0][1] === board[0][2]) ? true : false;
-  var row2 = (board[1][0] === board[1][1] && board[1][1] === board[1][2]) ? true : false;
-  var row3 = (board[2][0] === board[2][1] && board[2][1] === board[2][2]) ? true : false;
-  var column1 = (board[0][0] === board[1][0] && board[1][0] === board[2][0]) ? true : false;
-  var column2 = (board[0][1] === board[1][1] && board[1][1] === board[2][1]) ? true : false;
-  var column3 = (board[0][2] === board[1][2] && board[1][2] === board[2][2]) ? true : false;
-  var diagonalRight = (board[0][0] === board[1][1] && board[1][1] === board[2][2]) ? true : false;
-  var diagonalLeft = (board[0][2] === board[1][1] && board[1][1] === board[2][0]) ? true : false;
 
-  // Error checking //
-  console.log(`row1: ${row1}`);
-  console.log(`row2: ${row2}`);
-  console.log(`row3: ${row3}`);
-  console.log(`col1: ${column1}`);
-  console.log(`col2: ${column2}`);
-  console.log(`col3: ${column3}`);
-  console.log(`diagonalRight: ${diagonalRight}`);
-  console.log(`diagonalLeft: ${diagonalLeft}`);
+  // Nested loop to check for wins: 1. horizontally and 2. vertically
+  for (i = 0; i < boardSize; i++) {
+    // 1. To check horizontally, fix the row (i) and loop through the columns (j)
+    console.log("checking for horizontal wins..");
+    let firstRowEntry = board[i][0]
+    
+    console.log(`Looping through row ${i}..`)
+    console.log(`first row entry: ${firstRowEntry}`);
+    for (j = 1; j < board.length; j++) {
+      // this row
+      let row = board[i];
+      console.log(`Coordinates (${i}, ${j}): ${row[j]}`);
+      // if any entry in from the second entry onward is not equal to the first entry, then this player has not won yet-> return false. Otherwise, return true.
+      if (row[j] !== firstRowEntry) {
+        console.log('no match');
+        return false;
+      } else {
+        console.log('match!')
+        return true;
+      }
+    }
+    // 2. To check vertically, fix the column (i) and loop through the rows (j)
+    console.log("checking for vertical wins..");
+    let firstColumnEntry = board[0][i];
 
-  //// Winning conditions ////
-  // If any three squares in a row or column has X or O, 
-  if ((row1 && board[0][0] === currentPlayer) || (row2 && board[1][0] === currentPlayer) || (row3 && board[2][0] === currentPlayer) || (column1 && board[0][0] === currentPlayer) || (column2 && board[0][1] === currentPlayer) || (column3 && board[0][2] === currentPlayer) || (diagonalRight && board[0][0] === currentPlayer) || (diagonalLeft && board[0][2] === currentPlayer)) {
-    console.log(`game over. player ${currentPlayer} wins`);
-    return true;
+    console.log(`Looping through column ${i}..`)
+    console.log(`first column entry: ${firstColumnEntry}`);
+    for (j = 1; j < board.length; j++) {
+      // if any entry from the second entry onward is not equal to the first entry, then this player has not won yet-> return false. Otherwise, return true.
+      console.log(`Coordinates (${j}, ${i}): ${board[j][i]}`);
+      (board[j][i] !== firstColumnEntry) ? false : true;
+    }
+    
   }
-  // Otherwise, nobody won yet
-  else {
-    console.log('no win yet');
-    return false;
-  }
-  
-  
-  //else if (row1 || row2 || row3 || column1 || column2 || column3 || diagonalRight || diagonalLeft) {}
-  // if (board[0][0] === board[0][1] && board[0][1] === board[0][2]) {
-  //   console.log('coordinates of first row squares:');
-  //   console.log(`${board[0][0]}, ${board[0][1]}, ${board[0][2]}`);
-  //   return true;
-  // }
 
-  // if (board[0][0] === board[1][0] && board[1][0] === board[2][0]) {
-  //   console.log('coordinates of first column squares:');
-  //   console.log(`${board[0][0]}, ${board[1][0]}, ${board[2][0]}`);
-  //   return true;
-  //   // X
-  //   // X
-  //   // X
+  // loop to check diagonal left to right
+  for (i = 0; i < boardSize; i++) {
+    let topLeftEntry = board[0][0];
+    // if the three diagonal left to right entries are not equal, then return false
+    (board[i][i] !== topLeftEntry) ? false : true;
+  }
+  // loop to check diagonal right to left
+  let topRightEntry = board[boardSize - 1][boardSize - 1];
+  for (j = boardSize - 1; j > 0; j -= 1) {
+    // let i be the row number in terms of j: i = j - (2j - (boardSize - 1)
+    let i = boardSize - 1 - j;
+    // if the three diagonal right to left entries are not equal, then return false
+    (board[j][i] !== topRightEntry) ? false : true;
+  }
 };
 
 // function to store user input of the players' names and marks (X or O) into the global array playerInfo
@@ -219,6 +225,9 @@ const initGame = () => {
   // store playerinfo in global array
   const input = "bob,alice";
   createPlayerInfo(input, "X", "O");
+
+  // store boardSize in global variable
+  boardSize = 3;
 
   // increment numberOfRounds
   numberOfRounds += 1;
