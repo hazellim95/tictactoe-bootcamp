@@ -146,7 +146,6 @@ const squareClick = function (column, row) {
 
 // check whether the game is won - returns true if won, and false if otherwise
 const checkWin = (board) => {
-
   // Nested loop to check for wins: 1. horizontally and 2. vertically
   for (i = 0; i < boardSize; i++) {
     // 1. To check horizontally, fix the row (i) and loop through the columns (j)
@@ -159,42 +158,78 @@ const checkWin = (board) => {
       // this row
       let row = board[i];
       console.log(`Coordinates (${i}, ${j}): ${row[j]}`);
+      // new variable for number of matches
+      let numberOfMatches = 0;
       // if any entry in from the second entry onward is not equal to the first entry, then this player has not won yet-> return false. Otherwise, return true.
-      if (row[j] !== firstRowEntry) {
-        console.log('no match');
-        return false;
-      } else {
-        console.log('match!')
+      if (row[j] === firstRowEntry) {
+        console.log('match');
+        // increment the number of matches to the first entry
+        numberOfMatches += 1;
+      }
+      // if all the remaining entries match (exclude first entry), there is a win
+      if (numberOfMatches == boardSize - 1) {
+        console.log('win!');
         return true;
       }
+      return false;
     }
     // 2. To check vertically, fix the column (i) and loop through the rows (j)
     console.log("checking for vertical wins..");
     let firstColumnEntry = board[0][i];
+    // new variable for number of matches
+    let numberOfMatches = 0;
 
     console.log(`Looping through column ${i}..`)
     console.log(`first column entry: ${firstColumnEntry}`);
     for (j = 1; j < board.length; j++) {
-      // if any entry from the second entry onward is not equal to the first entry, then this player has not won yet-> return false. Otherwise, return true.
       console.log(`Coordinates (${j}, ${i}): ${board[j][i]}`);
-      (board[j][i] !== firstColumnEntry) ? false : true;
+
+      if (board[j][i] === firstColumnEntry) {
+        numberOfMatches += 1;
+      }
+
+      if (numberOfMatches == boardSize - 1) {
+        console.log('win!');
+        return true;
+      }
+      return false;
     }
-    
   }
 
   // loop to check diagonal left to right
   for (i = 0; i < boardSize; i++) {
+    let numberOfMatches = 0;
     let topLeftEntry = board[0][0];
     // if the three diagonal left to right entries are not equal, then return false
-    (board[i][i] !== topLeftEntry) ? false : true;
+    if (board[i][i] === topLeftEntry) {
+      numberOfMatches += 1;
+    };
+    if (numberOfMatches === boardSize - 1) {
+      console.log('win');
+      return true;
+    }
+    else {
+      return false;
+    }
   }
+  
   // loop to check diagonal right to left
   let topRightEntry = board[boardSize - 1][boardSize - 1];
   for (j = boardSize - 1; j > 0; j -= 1) {
     // let i be the row number in terms of j: i = j - (2j - (boardSize - 1)
     let i = boardSize - 1 - j;
+    let numberOfMatches = 0;
     // if the three diagonal right to left entries are not equal, then return false
-    (board[j][i] !== topRightEntry) ? false : true;
+    if (board[j][i] === topRightEntry) {
+      numberOfMatches += 1;
+    };
+    if (numberOfMatches === boardSize - 1) {
+      console.log('win');
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 };
 
