@@ -153,7 +153,7 @@ const checkWin = (board) => {
   var diagonalRight = (board[0][0] === board[1][1] && board[1][1] === board[2][2]) ? true : false;
   var diagonalLeft = (board[0][2] === board[1][1] && board[1][1] === board[2][0]) ? true : false;
 
-  //// Winning conditions ////
+  // Error checking //
   console.log(`row1: ${row1}`);
   console.log(`row2: ${row2}`);
   console.log(`row3: ${row3}`);
@@ -163,7 +163,7 @@ const checkWin = (board) => {
   console.log(`diagonalRight: ${diagonalRight}`);
   console.log(`diagonalLeft: ${diagonalLeft}`);
 
-
+  //// Winning conditions ////
   // If any three squares in a row or column has X or O, 
   if ((row1 && board[0][0] === currentPlayer) || (row2 && board[1][0] === currentPlayer) || (row3 && board[2][0] === currentPlayer) || (column1 && board[0][0] === currentPlayer) || (column2 && board[0][1] === currentPlayer) || (column3 && board[0][2] === currentPlayer) || (diagonalRight && board[0][0] === currentPlayer) || (diagonalLeft && board[0][2] === currentPlayer)) {
     console.log(`game over. player ${currentPlayer} wins`);
