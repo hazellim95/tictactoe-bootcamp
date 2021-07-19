@@ -41,32 +41,42 @@ const getPlayerInfo = () => {
   // Get the name of players 1 and 2
 }
 
+// build board data array
+// Create the board data array for the user selected boardSize
+const buildBoardData = () => {
+  console.log("building board data..");
+    for (i = 0; i < boardSize; i++) {
+      // push 'boardSize' number of columns to each row
+      for (j = 0; j < boardSize; j++) {
+        let row = [];
+        row.splice(j, 0, '');
+        console.log(row);
+      }
+      // push each row to the board data array
+      board.push(row);
+    }
+  console.log('created board data array:');
+  console.log(board); // IDK WHY THIS IS EMPTY ALTHOUGH I ALREADY CREATED IT
+}
+
+
 // completely rebuilds the entire board every time there's a click
 const buildBoard = (board) => {
+  // remove the previous container
+  //document.body.remove(board);
+
   // start with an empty container
   boardContainer.innerHTML = '';
   boardElement = document.createElement('div');
   boardElement.classList.add('board');
 
-  // Create the board data array for the user selected boardSize
-  for (i = 0; i < boardSize; i++) {
-    // create a row 
-    const row = [];
-    // push 'boardSize' number of columns to each row
-    for (j = 0; j < boardSize; j++) {
-      row.push('');
-    }
-    // push each row to the board data array
-    board.push(row);
-  }
-  console.log('created board data array:');
-  console.log(board);
-
   // move through the board data array and create the
   // current state of the board
-  for (let i = 0; i < board.length; i += 1) {
+  for (let i = 0; i < boardSize; i += 1) {
     // separate var for one row / row element
-    const row = board[i];
+    let row = board[i];
+    console.log(`row: ${row}`);
+    console.log(`board: ${board}`);
     const rowElement = document.createElement('div');
     rowElement.classList.add('row');
 
@@ -121,7 +131,7 @@ const squareClick = function (column, row) {
   if (board[column][row] === '') {
     // assign value of this data to be the currentPlayer's mark
     board[column][row] = currentPlayer;
-
+    
     // refresh the screen with a new board
     // according to the array that was just changed
     buildBoard(board);
@@ -269,6 +279,9 @@ const createPlayerInfo = (input, mark1, mark2) => {
 
 // create the board container element and put it on the screen
 const initGame = () => {
+  // build board data
+  buildBoardData();
+
   // store playerinfo in global array
   const input = "bob,alice";
   createPlayerInfo(input, "X", "O");
@@ -315,6 +328,7 @@ const initGame = () => {
 
     // if there is an existing board, clear it first
     if (board.length > 0) {
+      console.log("existing board is filled. Empty it");
       board = [];
     }
     // build the board - right now it's empty
