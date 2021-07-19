@@ -1,10 +1,6 @@
 //**** GLOBALS ***//
 // keep data about the game in a 2-D array
-const board = [
-  ['', '', ''],
-  ['', '', ''],
-  ['', '', ''],
-];
+let board = [];
 
 let boardSize;
 
@@ -37,6 +33,8 @@ let numberOfRounds = 0;
 let playerInfo = [];
 
 
+
+
 //*** GAME LOGIC ***//
 // get player info
 const getPlayerInfo = () => {
@@ -49,6 +47,20 @@ const buildBoard = (board) => {
   boardContainer.innerHTML = '';
   boardElement = document.createElement('div');
   boardElement.classList.add('board');
+
+  // Create the board data array for the user selected boardSize
+  for (i = 0; i < boardSize; i++) {
+    // create a row 
+    const row = [];
+    // push 'boardSize' number of columns to each row
+    for (j = 0; j < boardSize; j++) {
+      row.push('');
+    }
+    // push each row to the board data array
+    board.push(row);
+  }
+  console.log('created board data array:');
+  console.log(board);
 
   // move through the board data array and create the
   // current state of the board
@@ -261,9 +273,6 @@ const initGame = () => {
   const input = "bob,alice";
   createPlayerInfo(input, "X", "O");
 
-  // store boardSize in global variable
-  boardSize = 3;
-
   // increment numberOfRounds
   numberOfRounds += 1;
 
@@ -271,21 +280,67 @@ const initGame = () => {
   currentPlayer = playerInfo[0].mark;
   console.log(`currentPlayer: ${currentPlayer}`);
 
+  // Create user input container and add game instructions
+  const inputContainer = document.createElement('div');
+  inputContainer.classList.add('input-container');
+  inputContainer.innerText = "Please enter an integer greater than or equal to 2 for the board size.";
+  document.body.appendChild(inputContainer);
+
+  // create input field for user to input board size
+  let inputField = document.createElement('input');
+  inputField.classList.add('input');
+  inputField.innerText = 'Enter board size';
+  inputContainer.appendChild(inputField);
+
+   // create the button that gets the inputted board size
+  let button = document.createElement('button');
+  button.classList.add('input-button');
+  button.innerText = 'Play now';
+  button.addEventListener('click', () => {
+    // use query selector to get the input value from the input field
+    const userInput = document.querySelector('input');
+    console.log(userInput);
+    const userInputText = userInput.value;
+    console.log(userInputText);
+    const inputToNumber = Number(userInputText);
+
+    // Input validation: If the input is not a number or not an integer, prompt user for integer  value
+    if (inputToNumber <= 1 || inputToNumber == NaN || isNaN(parseFloat(inputToNumber))) {
+      output.innerText = 'Oops, please only choose an integer greater than or equal to 2.'
+      return;
+    }
+
+    // assign this input value to global variable boardSize
+    boardSize = inputToNumber;
+
+    // if there is an existing board, clear it first
+    if (board.length > 0) {
+      board = [];
+    }
+    // build the board - right now it's empty
+    buildBoard(board);
+
+    //Set output message to start the game
+    output.innerText = `You chose a ${boardSize} by ${boardSize} board. The game begins now! Player 1 goes first.`
+  })
+  inputContainer.appendChild(button);
+
   // create board container
   boardContainer = document.createElement('div');
   document.body.appendChild(boardContainer);
 
-  // build the board - right now it's empty
-  buildBoard(board);
-
   // build output element
   output = document.createElement('div');
   output.classList.add('output');
+  // set default message
+  output.innerText = "Welcome to Tic Tac Toe! Please enter the boardsize in the space above."
   document.body.appendChild(output);
 
   // build scoreboard element
   scoreBoard = document.createElement('div');
   scoreBoard.classList.add('score-board');
+  // set default message
+  scoreBoard.innerText = "Scoreboard";
   document.body.appendChild(scoreBoard);
 };
 
